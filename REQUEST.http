@@ -1,0 +1,5 @@
+GET http://localhost:3005/health
+###
+GET http://localhost:3005/db/health
+###
+GET http://localhost:3005/health?status
