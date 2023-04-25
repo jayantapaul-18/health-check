@@ -48,6 +48,13 @@ brew install pre-commit
 pre-commit install
 pre-commit install --hook-type commit-msg
 pre-commit run --all-files
+
+git add .
+git status
+pre-commit run --all-files
+cz c
+git commit -m 'feat: health check api with backend api status response'
+git push origin main --force
 ```
 
 # Request & Response
