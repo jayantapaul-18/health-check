@@ -34,6 +34,7 @@
     "mysql2": "^3.2.3",
     "pink": "^0.0.6",
     "pino-http": "^8.3.3",
-    "swagger-ui-express": "^4.6.2"
+    "swagger-ui-express": "^4.6.2",
+    "winston": "^3.8.2"
   }
 }

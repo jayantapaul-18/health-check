@@ -1,10 +1,39 @@
 const express = require('express');
+const http = require('http');
+const originalRequest = http.request;
 const axios = require('axios');
 const helmet = require("helmet");
 const bodyParser = require('body-parser');
 const pino = require('pino-http')();
 const mysql = require('mysql2/promise');
+const { networkInterfaces } = require('os');
+const winston = require('winston');
+const logger = winston.createLogger({
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: 'app.log' })
+  ]
+});
 
+
+const nets = networkInterfaces();
+const results = Object.create(null); // Or just '{}', an empty object
+
+for (const name of Object.keys(nets)) {
+    for (const net of nets[name]) {
+        // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
+        // 'IPv4' is in Node <= 17, from 18 it's a number 4 or 6
+        const familyV4Value = typeof net.family === 'string' ? 'IPv4' : 4
+        if (net.family === familyV4Value && !net.internal) {
+            if (!results[name]) {
+                results[name] = [];
+            }
+            results[name].push(net.address);
+        }
+    }
+}
+const localIP = results.en0[0]
+console.log(localIP);
 // const swaggerUi = require('swagger-ui-express');
 // const swaggerDocument = require('./swagger.json');
 // const docx = require("docx")
@@ -23,6 +52,23 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 //app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.use((req, res, next) => {
+  logger.info(`${req.method} ${req.url}`);
+  next();
+});
+
+http.request = function (options, callback) {
+  if (options.host == undefined) {
+    logger.info(`${options.method} ${localIP}:${options.port}${options.path}`);
+  } else {
+    logger.info(`${options.method} ${options.host}:${options.port}${options.path}`);
+  }
+  return originalRequest.call(this, options, callback);
+};
+process.on('exit', (code) => {
+  logger.info(`Exit code: ${code}`);
+});
 
 const dbConfig = {
     host: 'your-db-hostname',
