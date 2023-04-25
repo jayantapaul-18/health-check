@@ -14,7 +14,8 @@ const logger = winston.createLogger({
     new winston.transports.File({ filename: 'app.log' })
   ]
 });
-
+// const swaggerUi = require('swagger-ui-express');
+// const swaggerDocument = require('./swagger.json');
 
 const nets = networkInterfaces();
 const results = Object.create(null); // Or just '{}', an empty object
@@ -34,13 +35,6 @@ for (const name of Object.keys(nets)) {
 }
 const localIP = results.en0[0]
 console.log(localIP);
-// const swaggerUi = require('swagger-ui-express');
-// const swaggerDocument = require('./swagger.json');
-// const docx = require("docx")
-// const expressAdmin = require("@runkit/runkit/express-endpoint/1.0.0");
-// const admin = expressAdmin(exports);
-// const { Document, Packer, Paragraph, TextRun } = docx;
-
 
 /* Configure Express App */
 const app = express();
@@ -95,9 +89,7 @@ app.get('/health', async (req, res) => {
     try {
         const response = await axios.get(`${dependency.url}`);
         const result = { name: dependency.name, status: "OK"};
-        // console.log(response.data);
         healthStatus.push(result);
-        // healthStatus[dependency.name] = response.data.status;
     } catch (err) {
         healthStatus[dependency.name] = (err.message);
         const result = { name: dependency.name, status: 'Error:'+err.message };
@@ -109,11 +101,6 @@ const isHealthy = healthStatus.every(result => result.status === 'OK');
 
 res.status(isHealthy ? 200 : 500).json({ isHealthy, healthStatus });
 });
-  //const overallStatus = Object.values(healthStatus).every(status => status === 'OK') ? 'OK' : 'Error';
-  // status: overallStatus,
-//   res.json({ dependencies: healthStatus });
-// });
-
 
 app.get('/db/health', async (req, res) => {
     try {
@@ -126,37 +113,6 @@ app.get('/db/health', async (req, res) => {
       res.status(500).json({ status: 'Error' });
     }
   });
-
-
-
-// app.get("/", async (req, res) => {
-//     const doc = new Document({
-//         sections: [{
-//             properties: {},
-//             children: [
-//                 new Paragraph({
-//                     children: [
-//                         new TextRun("Hello World"),
-//                         new TextRun({
-//                             text: "Foo Bar",
-//                             bold: true,
-//                         }),
-//                         new TextRun({
-//                             text: "\tGithub is the best",
-//                             bold: true,
-//                         }),
-//                     ],
-//                 }),
-//             ],
-//         }],
-//     });
-
-//     const b64string = await Packer.toBase64String(doc);
-
-//     res.setHeader('Content-Disposition', 'attachment; filename=My Document.docx');
-//     res.send(Buffer.from(b64string, 'base64'));
-// });
-
 
 /* Configure Express Server */
 app.listen(port, () => {

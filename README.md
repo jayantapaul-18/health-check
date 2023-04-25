@@ -33,6 +33,9 @@ git clone https://github.com/jayantapaul-18/health-check.git
 cd health-check
 npm install
 node index.js
+or,
+npm install -g nodemon
+nodemon index.js
 ```
 
 ## Running pre-commit checks
@@ -55,6 +58,19 @@ pre-commit run --all-files
 cz c
 git commit -m 'feat: health check api with backend api status response'
 git push origin main --force
+```
+
+# Release - standard-version
+
+Run the below command to create a new release `CHANGELOGS`
+
+```bash
+npm install --save-dev standard-version
+npm install --save-dev commitizen
+npx commitizen init cz-conventional-changelog --save-dev --save-exact
+npm run commit
+npm run release
+git push --follow-tags origin main && npm publish
 ```
 
 # Request & Response
