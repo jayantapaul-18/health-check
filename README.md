@@ -68,6 +68,15 @@ Run the below command to create a new release `CHANGELOGS`
 npm install --save-dev standard-version
 npm install --save-dev commitizen
 npx commitizen init cz-conventional-changelog --save-dev --save-exact
+# Install commitlint cli and conventional config
+npm install --save-dev @commitlint/config-conventional @commitlint/cli
+# Install Husky
+npm install husky --save-dev
+# Activate hooks
+npx husky install
+# Add hook
+npx husky add .husky/commit-msg 'npx --no-install commitlint --edit "$1"'
+# run
 npm run commit
 npm run release
 git push --follow-tags origin main && npm publish

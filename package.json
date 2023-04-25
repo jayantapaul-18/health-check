@@ -4,6 +4,7 @@
   "description": "NodeJS Health check",
   "main": "index.js",
   "scripts": {
+    "prepare": "husky install",
     "test": "node index.js",
     "start": "node index.js",
     "release": "standard-version",
@@ -40,8 +41,11 @@
     "winston": "^3.8.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.6.1",
+    "@commitlint/config-conventional": "^17.6.1",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
+    "husky": "^8.0.3",
     "standard-version": "^9.5.0"
   },
   "config": {
