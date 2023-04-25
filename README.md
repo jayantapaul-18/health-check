@@ -70,7 +70,7 @@ npm install --save-dev commitizen
 npx commitizen init cz-conventional-changelog --save-dev --save-exact
 # Install commitlint cli and conventional config
 npm install --save-dev @commitlint/config-conventional @commitlint/cli
-# Install Husky
+# Install Husky - Husky improves commits and more
 npm install husky --save-dev
 # Activate hooks
 npx husky install
@@ -80,6 +80,14 @@ npx husky add .husky/commit-msg 'npx --no-install commitlint --edit "$1"'
 npm run commit
 npm run release
 git push --follow-tags origin main && npm publish
+```
+
+# To Bypass hooks`
+
+We can bypass pre-commit and commit-msg hooks using Git -n/--no-verify option:
+
+```bash
+git commit -m "my no commit" --no-verify
 ```
 
 # Request & Response
@@ -101,3 +109,29 @@ GET http://localhost:3005/health
 ❯ docker build -t health-check .
 - Need to optimize - TO DO
 ```
+
+# Code Structure
+
+```bash
+tree -L 1
+```
+
+```bash
+├── CHANGELOG.md
+├── CODEOWNERS
+├── Dockerfile
+├── LICENSE
+├── README.md
+├── REQUEST.http
+├── app.log
+├── commitlint.config.js
+├── config.js
+├── index.js
+├── node_modules
+├── package-lock.json
+├── package.json
+├── prepare.js
+└── swagger.json
+```
+
+# LICENSE
