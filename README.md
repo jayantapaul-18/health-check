@@ -93,13 +93,38 @@ git commit -m "my no commit" --no-verify
 # Request & Response
 
 ```bash
-GET http://localhost:3005/health
+curl --location 'http://localhost:3005/health?tls=0'
+curl --location 'http://localhost:3005/health?tls=1'
 ```
 
 `Response`
 
-```bash
-{"isHealthy":false,"healthStatus":[{"name":"API 1","status":"Error:connect ECONNREFUSED 127.0.0.1:4000"},{"name":"API 2","status":"Error:connect ECONNREFUSED 127.0.0.1:5000"},{"name":"API 3","status":"Error:connect ECONNREFUSED 127.0.0.1:6000"},{"name":"Database","status":"Error:connect ECONNREFUSED 127.0.0.1:3306"},{"name":"backend","status":"OK"}]}
+```javascript
+{
+  "isHealthy": true,
+  "node_tls_reject_unauthorize": "0",
+  "timeStamp": "2023-05-20T23:58:46.262Z",
+  "healthStatus": [
+    {
+      "i": "✅",
+      "name": "API 1",
+      "status": "OK",
+      "uptime": 49
+    },
+    {
+      "i": "✅",
+      "name": "API 2",
+      "status": "OK",
+      "uptime": 20
+    },
+    {
+      "i": "✅",
+      "name": "Backend-Node",
+      "status": "OK",
+      "uptime": 475
+    }
+  ]
+}
 
 ```
 
